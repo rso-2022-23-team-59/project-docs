@@ -12,7 +12,7 @@ services:
       - db
   store-catalog:
     build:
-      context: ../product-catalog
+      context: ../store-catalog
     environment:
       - KUMULUZEE_DATASOURCES0_CONNECTIONURL=jdbc:postgresql://db:5432/central
     ports:
