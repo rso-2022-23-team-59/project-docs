@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  product-catalog:
+    build:
+      context: ../product-catalog
+    environment:
+      - KUMULUZEE_DATASOURCES0_CONNECTIONURL=jdbc:postgresql://db:5432/central
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+  store-catalog:
+    build:
+      context: ../product-catalog
+    environment:
+      - KUMULUZEE_DATASOURCES0_CONNECTIONURL=jdbc:postgresql://db:5432/central
+    ports:
+      - 8081:8080
+    depends_on:
+      - db
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=dbuser
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=central
+    ports:
+      - 5432:5432
+
