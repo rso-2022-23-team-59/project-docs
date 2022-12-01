@@ -19,6 +19,13 @@ services:
       - 8081:8080
     depends_on:
       - db
+  adminer:
+    image: adminer
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - 7000:8080
   db:
     image: postgres:13
     environment:
