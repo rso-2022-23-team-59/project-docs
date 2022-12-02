@@ -32,3 +32,8 @@ Build only one service
 ```bash
 docker compose up product-catalog --build
 ```
+
+Enter container bash
+```bash
+ docker compose exec -it product-catalog bash
+ ```
