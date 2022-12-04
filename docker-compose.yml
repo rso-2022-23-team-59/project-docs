@@ -4,6 +4,7 @@ services:
   product-catalog:
     build:
       context: ../product-catalog
+      dockerfile: Dockerfile.dev
     environment:
       - KUMULUZEE_DATASOURCES0_CONNECTIONURL=jdbc:postgresql://db:5432/central
     ports:

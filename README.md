@@ -33,6 +33,11 @@ Build only one service
 docker compose up product-catalog --build
 ```
 
+Enter container bash
+```bash
+ docker compose exec -it product-catalog bash
+ ```
+
 ## Running in production
 
 First, install [Azure CLI](https://learn.microsoft.com/sl-si/cli/azure/install-azure-cli?view=azure-cli-latest) and connect to Azure Kubernetes service.
