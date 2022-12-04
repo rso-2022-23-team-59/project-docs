@@ -32,3 +32,51 @@ Build only one service
 ```bash
 docker compose up product-catalog --build
 ```
+
+## Running in production
+
+First, install [Azure CLI](https://learn.microsoft.com/sl-si/cli/azure/install-azure-cli?view=azure-cli-latest) and connect to Azure Kubernetes service.
+
+```bash
+# Set Azure subscription id
+az account set --subscription <SUBSCRIPTION_ID>
+
+# Connect to Azure Kubernetes service in resource group PriceComparisonRG
+az aks get-credentials --resource-group PriceComparisonRG --name price-comparison
+```
+
+Then, start the [nginx ingress controller](https://kubernetes.github.io/ingress-nginx/deploy/#quick-start) responsible for redirecting requests to corresponding microservices.
+
+```bash
+# Start nginx Ingress Controller
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.5.1/deploy/static/provider/cloud/deploy.yaml
+
+# Wait until the nginx Ingress Controller starts
+kubectl wait --namespace ingress-nginx --for=condition=ready pod --selector=app.kubernetes.io/component=controller --timeout=120s
+```
+
+Add a Kubernetes secret with database password.
+
+```bash
+# Add a secret to Kubernetes (required by product-catalog and shopping-cart Docker images)
+# For more information see https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-kubectl/
+kubectl create secret generic database-password --from-literal=KUMULUZEE_DATASOURCES0_PASSWORD='<DATABASE_PASSWORD>'
+```
+
+Start the ingress and display its public IP.
+
+```bash
+# Create an Ingress for routing data to microservices
+kubectl apply -f ingress.yaml
+
+# Show IP address of created Ingress Controller
+kubectl get service ingress-nginx-controller --namespace=ingress-nginx
+```
+
+The Ingress defines the following endpoints:
+
+| Endpoint | Microservice | Example URL |
+| -------- | ------------ | ----------- |
+| `/frontend` | `frontend:8080` | `http://<EXTERNAL_IP>/frontend` |
+| `/product-catalog` | `product-catalog:8080` | `http://<EXTERNAL_IP>/product-catalog/v1/products` |
+| `/shopping-cart` | `shopping-cart:8080` | `http://<EXTERNAL_IP>/shopping-cart/v1/shopping-carts/1` |
