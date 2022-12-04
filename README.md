@@ -85,7 +85,8 @@ The Ingress defines the following endpoints:
 | Endpoint | Microservice | Example URL |
 | -------- | ------------ | ----------- |
 | `/frontend` | `frontend:8080` | `http://<EXTERNAL_IP>/frontend` |
-| `/product-catalog` | `product-catalog:8080` | `http://<EXTERNAL_IP>/product-catalog/v1/products` |
+| `/product-catalog` | `product-catalog:8080` | `http://<EXTERNAL_IP>/product-catalog/v1/products` |¸
+| `/store-catalog` | `store-catalog:8080` | `http://<EXTERNAL_IP>/store-catalog/v1/stores` |
 | `/shopping-cart` | `shopping-cart:8080` | `http://<EXTERNAL_IP>/shopping-cart/v1/shopping-carts/1` |
 
 ### Create Kubernetes deployments and services
