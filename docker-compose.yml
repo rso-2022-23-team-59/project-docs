@@ -14,10 +14,21 @@ services:
   store-catalog:
     build:
       context: ../store-catalog
+      dockerfile: Dockerfile.dev
     environment:
       - KUMULUZEE_DATASOURCES0_CONNECTIONURL=jdbc:postgresql://db:5432/central
     ports:
       - 8081:8080
+    depends_on:
+      - db
+  shopping-cart:
+    build:
+      context: ../shopping-cart
+      dockerfile: Dockerfile.dev
+    environment:
+      - KUMULUZEE_DATASOURCES0_CONNECTIONURL=jdbc:postgresql://db:5432/central
+    ports:
+      - 8082:8080
     depends_on:
       - db
   adminer:
