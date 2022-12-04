@@ -65,7 +65,9 @@ Add a Kubernetes secret with database password.
 ```bash
 # Add a secret to Kubernetes (required by product-catalog and shopping-cart Docker images)
 # For more information see https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-kubectl/
-kubectl create secret generic database-password --from-literal=KUMULUZEE_DATASOURCES0_PASSWORD='<DATABASE_PASSWORD>'
+kubectl create secret generic product-catalog-database-password --from-literal=KUMULUZEE_DATASOURCES0_PASSWORD='<PASSWORD>'
+kubectl create secret generic store-catalog-database-password --from-literal=KUMULUZEE_DATASOURCES0_PASSWORD='<PASSWORD>'
+kubectl create secret generic shopping-cart-database-password --from-literal=KUMULUZEE_DATASOURCES0_PASSWORD='<PASSWORD>'
 ```
 
 Start the ingress and display its public IP.
@@ -85,3 +87,14 @@ The Ingress defines the following endpoints:
 | `/frontend` | `frontend:8080` | `http://<EXTERNAL_IP>/frontend` |
 | `/product-catalog` | `product-catalog:8080` | `http://<EXTERNAL_IP>/product-catalog/v1/products` |
 | `/shopping-cart` | `shopping-cart:8080` | `http://<EXTERNAL_IP>/shopping-cart/v1/shopping-carts/1` |
+
+### Create Kubernetes deployments and services
+
+To create Kubernetes deployments and services, run the following commands.
+
+```bash
+kubectl apply -f frontend/k8s/deployment.yaml
+kubectl apply -f product-catalog/k8s/deployment.yaml
+kubectl apply -f shopping-cart/k8s/deployment.yaml
+kubectl apply -f store-catalog/k8s/deployment.yaml
+```
