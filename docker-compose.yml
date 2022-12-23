@@ -1,6 +1,7 @@
 version: '3.8'
 
-services:
+services:  
+  
   frontend:
     build:
       context: ../frontend
@@ -10,43 +11,53 @@ services:
       - product-catalog
       - store-catalog
       - shopping-cart
+  
   product-catalog:
     build:
       context: ../product-catalog
       dockerfile: Dockerfile.dev
     environment:
       - KUMULUZEE_DATASOURCES0_CONNECTIONURL=jdbc:postgresql://db:5432/central
+      - KUMULUZEE_DISCOVERY_CONSUL_AGENT=http://consul:8500
     ports:
       - 8080:8080
     depends_on:
+      - consul
       - db
+
   store-catalog:
     build:
       context: ../store-catalog
       dockerfile: Dockerfile.dev
     environment:
       - KUMULUZEE_DATASOURCES0_CONNECTIONURL=jdbc:postgresql://db:5432/central
+      - KUMULUZEE_DISCOVERY_CONSUL_AGENT=http://consul:8500
     ports:
       - 8081:8080
     depends_on:
       - db
+      - consul
+  
   shopping-cart:
     build:
       context: ../shopping-cart
       dockerfile: Dockerfile.dev
     environment:
       - KUMULUZEE_DATASOURCES0_CONNECTIONURL=jdbc:postgresql://db:5432/central
+      - KUMULUZEE_DISCOVERY_CONSUL_AGENT=http://consul:8500
     ports:
       - 8082:8080
     depends_on:
       - db
-  adminer:
-    image: adminer
-    restart: always
-    depends_on:
-      - db
+      - consul
+
+  consul:
+    image: consul
     ports:
-      - 7000:8080
+      - "8500:8500"
+      - "8600:8600/udp"
+      - "8600:8600/tcp"
+
   db:
     image: postgres:13
     environment:
@@ -55,4 +66,3 @@ services:
       - POSTGRES_DB=central
     ports:
       - 5432:5432
-
