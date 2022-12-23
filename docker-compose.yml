@@ -1,6 +1,15 @@
 version: '3.8'
 
 services:
+  frontend:
+    build:
+      context: ../frontend
+    ports:
+      - 3000:80
+    depends_on:
+      - product-catalog
+      - store-catalog
+      - shopping-cart
   product-catalog:
     build:
       context: ../product-catalog
