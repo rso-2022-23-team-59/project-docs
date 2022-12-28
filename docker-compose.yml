@@ -19,11 +19,13 @@ services:
     environment:
       - KUMULUZEE_DATASOURCES0_CONNECTIONURL=jdbc:postgresql://db:5432/central
       - KUMULUZEE_DISCOVERY_CONSUL_AGENT=http://consul:8500
+      - KUMULUZEE_AMQP_RABBITMQ_HOSTS0_URL=rabbitmq
     ports:
       - 8080:8080
     depends_on:
       - consul
       - db
+      - rabbitmq
 
   store-catalog:
     build:
@@ -63,6 +65,7 @@ services:
     depends_on:
       - consul
       - db
+      - rabbitmq
 
   consul:
     image: consul
@@ -71,6 +74,12 @@ services:
       - "8600:8600/udp"
       - "8600:8600/tcp"
 
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
   db:
     image: postgres:13
     environment:
