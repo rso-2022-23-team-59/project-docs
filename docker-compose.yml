@@ -2,15 +2,15 @@ version: '3.8'
 
 services:  
   
-  frontend:
-    build:
-      context: ../frontend
-    ports:
-      - 3000:80
-    depends_on:
-      - product-catalog
-      - store-catalog
-      - shopping-cart
+  #frontend:
+  #  build:
+  #    context: ../frontend
+  #  ports:
+  #    - 3000:80
+  #  depends_on:
+  #    - product-catalog
+  #    - store-catalog
+  #    - shopping-cart
   
   product-catalog:
     build:
@@ -50,6 +50,19 @@ services:
     depends_on:
       - db
       - consul
+
+  notification-catalog:
+    build:
+      context: ../notification-catalog
+      dockerfile: Dockerfile.dev
+    environment:
+      - KUMULUZEE_DATASOURCES0_CONNECTIONURL=jdbc:postgresql://db:5432/central
+      - KUMULUZEE_DISCOVERY_CONSUL_AGENT=http://consul:8500
+    ports:
+      - 8083:8080
+    depends_on:
+      - consul
+      - db
 
   consul:
     image: consul
