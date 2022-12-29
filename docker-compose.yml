@@ -60,6 +60,8 @@ services:
     environment:
       - KUMULUZEE_DATASOURCES0_CONNECTIONURL=jdbc:postgresql://db:5432/central
       - KUMULUZEE_DISCOVERY_CONSUL_AGENT=http://consul:8500
+      - KUMULUZEE_AMQP_RABBITMQ_HOSTS0_URL=rabbitmq
+
     ports:
       - 8083:8080
     depends_on:
