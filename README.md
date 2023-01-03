@@ -104,3 +104,18 @@ kubectl apply -f product-catalog/k8s/deployment.yaml
 kubectl apply -f shopping-cart/k8s/deployment.yaml
 kubectl apply -f store-catalog/k8s/deployment.yaml
 ```
+
+### Consul
+
+```bash
+helm repo add hashicorp https://helm.releases.hashicorp.com
+
+# If namespace [consul] doesn't exist yet, run the following command
+helm install --values .\project-docs\consul.yaml consul hashicorp/consul --create-namespace --namespace consul --version "1.0.0"
+
+# If namespace [consul] alread exists, run the following command
+helm install --values .\project-docs\consul.yaml consul hashicorp/consul --create-namespace --namespace consul --version "1.0.0"
+
+# To remove Consul server, run the following command
+helm delete consul -n consul
+```
