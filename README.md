@@ -68,6 +68,9 @@ Add a Kubernetes secret with database password.
 kubectl create secret generic product-catalog-database-password --from-literal=KUMULUZEE_DATASOURCES0_PASSWORD='<PASSWORD>'
 kubectl create secret generic store-catalog-database-password --from-literal=KUMULUZEE_DATASOURCES0_PASSWORD='<PASSWORD>'
 kubectl create secret generic shopping-cart-database-password --from-literal=KUMULUZEE_DATASOURCES0_PASSWORD='<PASSWORD>'
+kubectl create secret generic notification-catalog-database-password --from-literal=KUMULUZEE_DATASOURCES0_PASSWORD='<PASSWORD>'
+kubectl create secret generic rabbitmq-password --from-literal=RABBITMQ_DEFAULT_PASS='<PASSWORD>'
+
 ```
 
 Start the ingress and display its public IP.
@@ -94,6 +97,8 @@ The Ingress defines the following endpoints:
 To create Kubernetes deployments and services, run the following commands.
 
 ```bash
+kubectl apply -f rabbitmq.yaml
+kubectl apply -f consul.yaml
 kubectl apply -f frontend/k8s/deployment.yaml
 kubectl apply -f product-catalog/k8s/deployment.yaml
 kubectl apply -f shopping-cart/k8s/deployment.yaml
