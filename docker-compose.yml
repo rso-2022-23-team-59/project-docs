@@ -3,15 +3,27 @@ version: '3.8'
 services:  
   
   frontend:
+    restart: always
     build:
       context: ../frontend
+      dockerfile: Dockerfile.dev
     ports:
-      - 3000:80
+      - 8089:8080
+    volumes:
+      - /app/node_modules
+      - ../frontend/src:/app/src 
+    tty: true
+    environment:
+      - HOST=0.0.0.0
+      - CHOKIDAR_USEPOLLING=true  
+  nginx:
+    build: ./nginx
+    ports:
+      - 8080:8080
     depends_on:
-      - product-catalog
       - store-catalog
-      - shopping-cart
-  
+      - frontend
+
   product-catalog:
     build:
       context: ../product-catalog
@@ -21,7 +33,7 @@ services:
       - KUMULUZEE_DISCOVERY_CONSUL_AGENT=http://consul:8500
       - KUMULUZEE_AMQP_RABBITMQ_HOSTS0_URL=rabbitmq
     ports:
-      - 8080:8080
+      - 8086:8080
     depends_on:
       - consul
       - db
@@ -90,3 +102,4 @@ services:
       - POSTGRES_DB=central
     ports:
       - 5432:5432
+
